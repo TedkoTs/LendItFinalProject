@@ -1,0 +1,187 @@
+<br />
+<div class="row" *ngIf="this.userData && this.curInvestments && this.curLoans">
+  <div
+    class="justify-content-center align-items-center mb-1 col-lg-4 col-md-12 col-sm-12 col-xs-12"
+  >
+    <div class="card card-pricing">
+      <div class="card-header">
+        <h4 class="card-title">Account Balance</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled current-loans">
+          <li>
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p>
+                      User:
+                      <b
+                        >{{ this.userData.firstName }}
+                        {{ this.userData.lastName }}</b
+                      >
+                    </p>
+                    <p>
+                      Current balance:
+                      <b
+                        >${{
+                          this.userData.currentBalance | number: '1.2-2'
+                        }}</b
+                      >
+                    </p>
+                    <p>
+                      Current Debt:
+                      <b> ${{ this.userData.totalDebt | number: '1.2-2' }}</b>
+                    </p>
+                    <p>
+                      Current Investments:
+                      <b
+                        >${{
+                          this.userData.totalInvestment | number: '1.2-2'
+                        }}</b
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 btn-div">
+                <button
+                  class="btn btn-block"
+                  *ngIf="!this.isGraphShowed"
+                  (click)="
+                    this.createGraph(); this.isGraphShowed = !this.isGraphShowed
+                  "
+                >
+                  <b>Show Graph</b>
+                </button>
+                <button
+                  class="btn btn-block"
+                  *ngIf="this.isGraphShowed"
+                  (click)="
+                    this.createGraph(); this.isGraphShowed = !this.isGraphShowed
+                  "
+                >
+                  <b>Hide Graph</b>
+                </button>
+              </div>
+            </div>
+          </li>
+          <div class="row">
+            <div class="col-6 btn-div">
+              <button class="btn btn-block" (click)="this.createDepositModal()">
+                <b>Deposit</b>
+              </button>
+            </div>
+            <div class="col-6 btn-div">
+              <button
+                type="button"
+                class="btn btn-block"
+                (click)="this.createWithdrawModal()"
+              >
+                <b>Withdraw</b>
+              </button>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div
+    class="justify-content-center align-items-center mb-1 col-lg-4 col-md-12 col-sm-12 col-xs-12"
+  >
+    <div class="card card-pricing">
+      <div class="card-header">
+        <h4 class="card-title">Total Debts</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled current-loans">
+          <li>
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p >
+                      Total period of all debts:
+                      <b *ngIf="this.curLoans[0]">{{ this.curLoans[0].period }} months</b>
+                      <b *ngIf="!this.curLoans[0]">No debts at the moment!</b>
+                    </p>
+                    <p>
+                      Number of investors:
+                      <b>{{ this.filteredForInvestors.length }}</b>
+                    </p>
+                    <p>
+                      Overdue Debts:
+                      <b>{{ this.overdueDebts }}</b>
+                    </p>
+                    <p *ngIf="this.nextDueDate">
+                      Next Due Date:
+                      <b>{{ this.nextDueDate }}</b>
+                    </p>
+                    <div class="card-text"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <button class="btn col-12" [routerLink]="'/borrower'">
+            <b>Borrow Panel</b>
+          </button>
+        </ul>
+      </div>
+    </div>
+    <br />
+    <div class="card card-pricing">
+      <div class="card-header">
+        <h4 class="card-title">Total Investments</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled current-loans">
+          <li>
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p *ngIf="this.curInvestments[0]">
+                      Total period of all investments:
+                      <b>{{ this.curInvestments[0].period }} months</b>
+                    </p>
+                    <p *ngIf="!this.curInvestments[0]">
+                      Total period of all investments:
+                      <b> No investments at the moment!</b>
+                    </p>
+                    <p>
+                      Number of borrowers:
+                      <b>{{ this.filterForBorrowers.length }}</b>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <button class="btn col-12" [routerLink]="'/investor'">
+            <b>Invest Panel</b>
+          </button>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div
+    class="justify-content-center align-items-center mb-1 col-lg-4 col-md-12 col-sm-12 col-xs-12"
+  >
+    <div
+      id="#chart-container-ele"
+      [ngStyle]="getStyle()"
+      *ngIf="this.isGraphShowed && this.dataSource"
+    >
+      <fusioncharts
+      *ngIf="this.isGraphShowed && this.dataSource"
+        width="100%"
+        height="100%"
+        type="pie3d"
+        [dataSource]="this.dataSource"
+        (initialized)="initialized($event)"
+      >
+      </fusioncharts>
+    </div>
+  </div>
+</div>

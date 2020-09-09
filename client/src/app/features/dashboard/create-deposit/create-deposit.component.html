@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    Amount to deposit
+  </h5>
+</div>
+<div class="modal-body">
+  <form
+    class="container"
+    [formGroup]="this.createDeposit"
+    (ngSubmit)="this.emitDepositData(this.createDeposit.value)"
+  >
+    <div class="form-group col-6">
+      <label for="exampleInputEmail1">Amount</label>
+      <input
+        type="number"
+        class="form-control"
+        id="deposit-amount"
+        placeholder=" Enter amount"
+        formControlName="amount"
+      />
+      <span
+        class="font-italic font-weight-bold text-danger"
+        *ngIf="createDeposit.controls.amount?.errors?.min"
+      >
+        Minimun amount to deposit: $1!
+      </span>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary btn-modal-close"
+        (click)="this.closeModal()"
+      >
+        Close
+      </button>
+      <button
+        type="submit"
+        [disabled]="createDeposit.invalid"
+        class="btn btn-outline-dark btn-modal"
+      >
+        Deposit
+      </button>
+    </div>
+  </form>
+</div>

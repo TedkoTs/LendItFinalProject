@@ -1,0 +1,227 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light full-navbar"
+  *ngIf="!this.user"
+>
+  <a class="navbar-brand font-weight-bolder" [routerLink]="['/']"
+    ><img
+      class="img-responsive2"
+      src="../../../../assets/Logo_08_12.png"
+      style="width: 125px; border-radius: 1px;"
+    />
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto"></ul>
+    <form class="form-inline my-2 my-lg-0">
+      <div class="row">
+        <a
+          class="btn btn-light font-weight-bolder sign-out"
+          style="margin: 0px 3px;"
+          [routerLink]="['/sign-in']"
+          role="button"
+          >Sign In</a
+        >
+        <a
+          class="btn btn-light font-weight-bolder sign-out"
+          [routerLink]="['/register']"
+          role="button"
+          >Sign Up</a
+        >
+      </div>
+    </form>
+  </div>
+</nav>
+
+<div *ngIf="this.user">
+  <nav class="navbar navbar-expand-lg navbar-light full-navbar">
+    <a class="navbar-brand font-weight-bolder" [routerLink]="['/dashboard']"
+      ><img
+        class=""
+        src="../../../../assets/Logo_08_12.png"
+        style="width: 125px; border-radius: 1px; margin: 0px;"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto"></ul>
+      <form class="form-inline my-2 my-lg-0">
+        <div class="row">
+          <a
+            class="nav-link font-weight-bolder nav-btns"
+            [routerLink]="['/dashboard']"
+            >Dashboard</a
+          >
+          <a
+            class="nav-link font-weight-bolder nav-btns"
+            [routerLink]="['/borrower']"
+            >Borrower</a
+          >
+          <a
+            class="nav-link font-weight-bolder nav-btns"
+            [routerLink]="['/investor']"
+            >Investor</a
+          >
+          <a
+            class="btn btn-light font-weight-bolder sign-out"
+            style="margin: 0px 5px;"
+            role="button"
+            (click)="this.signOut()"
+            >Sign Out</a
+          >
+        </div>
+      </form>
+    </div>
+  </nav>
+  <nav
+    class="navbar secondary-navbar navbar-expand-lg navbar-light color:#000000"
+    *ngIf="this.user && this.userBalanceData !== undefined"
+  >
+    <a class="navbar-brand" href="#"></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarBalance"
+      aria-controls="navbarBalance"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <b class="small-balance">Balance</b>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarBalance">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
+      <form class="form-inline my-2 my-lg-0">
+        <div class="user-info">
+          <div
+            class="btn secondary-navbar-btns"
+            *ngIf="this.userBalanceData.status !== 'admin'"
+          >
+            <span class="sec-navbar-text">Balance:</span>
+            <span class="badge badge-light badge-size"
+              >{{
+                this.userBalanceData.currentBalance | number: '1.2-2'
+              }}
+              $</span
+            >
+          </div>
+        </div>
+        <div class="user-info">
+          <div
+            class="btn secondary-navbar-btns"
+            *ngIf="this.userBalanceData.status !== 'admin'"
+          >
+            <span class="sec-navbar-text">Debts:</span>
+            <span class="badge badge-light badge-size"
+              >{{ this.userBalanceData.totalDebt | number: '1.2-2' }} $</span
+            >
+          </div>
+        </div>
+        <div
+          class="user-info"
+          *ngIf="this.userBalanceData.status !== 'admin'"
+          style="margin: 0px;"
+        >
+          <div class="btn secondary-navbar-btns">
+            <span class="sec-navbar-text">Investments:</span>
+            <span class="badge badge-light badge-size"
+              >{{
+                this.userBalanceData.totalInvestment | number: '1.2-2'
+              }}
+              $</span
+            >
+          </div>
+        </div>
+        <div class="user-info">
+          <a
+            *ngIf="this.userBalanceData.status === 'admin'"
+            class="btn secondary-navbar-btns"
+            role="button"
+            [routerLink]="['/users']"
+            ><span class="sec-navbar-text">Users</span></a
+          >
+        </div>
+        <div class="user-info">
+          <a
+            *ngIf="this.userBalanceData.status === 'admin'"
+            class="btn secondary-navbar-btns"
+            role="button"
+          >
+            <span class="badge badge-light badge-size">Admin</span>
+            <span class="sec-navbar-text"
+              >{{ this.userBalanceData.firstName }}
+              {{ this.userBalanceData.lastName }}</span
+            ></a
+          >
+        </div>
+        <div
+          class="col"
+          style="padding: 0px;"
+          *ngIf="this.userBalanceData.status !== 'admin'"
+        >
+          <div ngbDropdown class="d-inline-block">
+            <button
+              class="btn secondary-navbar-btns"
+              id="dropdownBasic1"
+              ngbDropdownToggle
+            >
+              <span class="badge badge-light badge-size">{{
+                this.userBalanceData.totalInvestment | investmentBadge
+              }}</span>
+              <span class="sec-navbar-text"
+                >{{ this.userBalanceData.firstName }}
+                {{ this.userBalanceData.lastName }}
+              </span>
+            </button>
+            <div
+              ngbDropdownMenu
+              aria-labelledby="dropdownBasic1"
+              class="dropdown-menu"
+            >
+              <div
+                ngbDropdownItem
+                class="dropdown-text"
+                *ngIf="this.nextDueDate"
+              >
+                Next Due Date: <br />{{ this.nextDueDate }}
+              </div>
+              <div
+                ngbDropdownItem
+                class="dropdown-text"
+                *ngIf="!this.nextDueDate"
+              >
+                Next Due Date: <br />
+                No loans at the moment
+              </div>
+              <div ngbDropdownItem class="dropdown-text">
+                Overdue Debts: {{ this.overdueDebts }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </nav>
+</div>

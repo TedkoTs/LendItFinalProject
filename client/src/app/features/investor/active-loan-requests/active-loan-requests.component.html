@@ -1,0 +1,46 @@
+<div class="card-body">
+  <ul class="list-unstyled loan-requests">
+    <li>
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p>
+              Name: <b>{{ this.firstName }} {{ this.lastName }}</b>
+            </p>
+            <p>
+              Total Amount: <b> ${{ this.totalAmount | number: '1.2-2' }}</b>
+            </p>
+            <p>
+              Target Period: <b>{{ this.period }} months</b>
+            </p>
+            <p>
+              Date Submited: <b>{{ this.dateSubmited }}</b>
+            </p>
+            <p>
+              Partial Available:
+              <b *ngIf="this.partial">Yes</b>
+              <b *ngIf="!this.partial">No</b>
+            </p>
+          </div>
+        </div>
+        <button
+          *ngIf="!this.partial"
+          type="button"
+          (click)="this.createProposeModal()"
+          class="btn col-12"
+          [disabled]="this.userBalanceData.currentBalance < this.totalAmount"
+        >
+          <b>Propose</b>
+        </button>
+        <button
+          *ngIf="this.partial"
+          type="button"
+          (click)="this.createPartialProposeModal()"
+          class="btn col-12"
+        >
+          <b>Propose</b>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

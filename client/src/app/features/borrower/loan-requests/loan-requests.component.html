@@ -1,0 +1,165 @@
+<div class="card-body" *ngIf="this.loanRequestData && this.loanSuggestions">
+  <ul class="list-unstyled loan-requests">
+    <li>
+      <div class="card">
+        <div class="card-body">
+          <form
+            [formGroup]="this.editLoanForm"
+            (submit)="this.editLoanRequest(this.editLoanForm.value)"
+          >
+            <div class="d-flex justify-content-between">
+              <div>
+                <p>
+                  Total Amount:
+                  <b *ngIf="!this.edit"
+                    >{{ this.amount | number: '1.2-2' }} $</b
+                  >
+
+                  <b *ngIf="this.edit" style="display: inline-flex;">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="loan-amount"
+                      placeholder=" Enter your prefered amount"
+                      formControlName="amount"
+                    />
+                    $
+                  </b>
+                  <br />
+                  <span
+                    class="font-italic font-weight-bold text-danger"
+                    *ngIf="editLoanForm.controls.amount?.errors?.min"
+                  >
+                    You can't edit amount less than -
+                    {{ this.editLoanForm.controls.amount?.errors?.min.min }} $!
+                  </span>
+                </p>
+                <p>
+                  Period: <b>{{ this.period }} Months</b>
+                </p>
+                <p>
+                  Date Submited: <b>{{ this.dateSubmited }} </b>
+                </p>
+                <p>
+                  Partial: <b *ngIf="this.partial"> Yes </b>
+                  <b *ngIf="!this.partial"> No </b>
+                </p>
+                <p *ngIf="this.partial && this.amountLeftToInvest > 0">
+                  Amount Left To Invest:
+                  <b>{{ this.amountLeftToInvest | number: '1.2-2' }} $</b>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 btn-div" *ngIf="!this.edit">
+                <button
+                  class="btn btn-block"
+                  (click)="this.resetForm(); this.editFormValidation()"
+                >
+                  <b>Edit</b>
+                </button>
+              </div>
+              <div class="col-6 btn-div" *ngIf="this.edit">
+                <button
+                  class="btn btn-block"
+                  type="submit"
+                  [disabled]="editLoanForm.invalid"
+                >
+                  <b>Save</b>
+                </button>
+              </div>
+              <div class="col-6 btn-div" *ngIf="this.edit">
+                <button class="btn btn-block" (click)="this.resetForm()">
+                  <b>Cancel</b>
+                </button>
+              </div>
+              <div class="col-6 btn-div" *ngIf="!this.edit">
+                <button class="btn btn-block" (click)="this.deleteRequest()">
+                  <b>Delete</b>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </li>
+    <h3 style="text-align: center;">Suggestions</h3>
+    <li class="loan-suggestions">
+      <div *ngFor="let suggestion of this.loanSuggestions">
+        <div *ngIf="suggestion.$requestId === $requestId">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <p>
+                    Amount:
+                    <b>{{ this.suggestion.amount | number: '1.2-2' }} $</b>
+                  </p>
+                  <p>
+                    Total Amount:
+                    <b
+                      >{{
+                        this.calculateTotalAmount(
+                          this.suggestion.amount,
+                          this.suggestion.interestRate,
+                          this.suggestion.period
+                        ) | number: '1.2-2'
+                      }}
+                      $</b
+                    >
+                  </p>
+                  <p>
+                    Period: <b>{{ this.suggestion.period }} Months </b>
+                  </p>
+                  <p>
+                    Date Submited: <b>{{ this.suggestion.dateSubmited }} </b>
+                  </p>
+                  <p>
+                    Installments:
+                    <b
+                      >{{
+                        (this.suggestion.amount *
+                          this.suggestion.interestRate) /
+                          100 /
+                          this.suggestion.period +
+                          this.suggestion.amount / this.suggestion.period
+                          | number: '1.2-2'
+                      }}
+                      $</b
+                    >
+                  </p>
+                  <p>
+                    Interest Rate:
+                    <b>{{ this.suggestion.interestRate }} %</b>
+                  </p>
+                  <p>
+                    Penalty Rate Per Day:
+                    <b>{{ this.suggestion.penalty }} %</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col-6 btn-div">
+                <button
+                class="btn btn-block"
+                (click)="this.acceptRequest(this.suggestion)"
+                >
+                <b>Accept</b>
+              </button>
+            </div>
+            <div class="col-6 btn-div">
+              <button
+                class="btn btn-block"
+                (click)="this.rejectSuggestion(this.suggestion.$suggestionId)"
+              >
+                <b>Reject</b>
+              </button>
+            </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

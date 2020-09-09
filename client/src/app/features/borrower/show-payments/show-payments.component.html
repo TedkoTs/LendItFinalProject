@@ -1,0 +1,50 @@
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-content modal-dialog-scrollable">
+    <div class="modal-header">
+      <h5 class="modal-title"><i>Your PAYMENTS</i></h5>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="!this.loanPayments.length">
+        You don't have any payments yet!
+      </div>
+      <div class="card" *ngFor="let payment of this.loanPayments">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p>
+                Amount Paid:
+                <b>{{ this.payment.amount | number: '1.2-2' }} $</b>
+              </p>
+              <p>
+                Overdue Paid:
+                <b>{{ this.payment.overdue | number: '1.2-2' }} $</b>
+              </p>
+              <p>
+                Total Paid:
+                <b
+                  >{{
+                    this.payment.amount + this.payment.overdue | number: '1.2-2'
+                  }}
+                  $</b
+                >
+              </p>
+              <p>
+                Date Paid: <b>{{ this.payment.date }}</b>
+              </p>
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary btn-modal-close"
+        (click)="this.closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

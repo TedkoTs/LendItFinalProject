@@ -1,0 +1,47 @@
+<br />
+<div class="row">
+  <div
+    class="justify-content-center align-items-center mb-1 col-lg-6 col-md-12 col-sm-12 col-xs-12"
+  >
+    <div class="col-12" *ngIf="this.userBalanceData">
+      <button
+        type="button"
+        class="btn col-12 show-proposals-btn"
+        (click)="this.createShowProposalsModal()"
+        [disabled]="this.userBalanceData.status === 'admin'"
+      >
+        <b>Show Proposals</b>
+      </button>
+      <div class="card card-pricing">
+        <div class="card-header">
+          <h4 class="card-title">Current Investments</h4>
+        </div>
+        <div *ngIf="this.currentInvestments">
+          <app-show-investment
+            *ngFor="let invest of this.currentInvestments"
+            [investmentData]="invest"
+            [user]="this.user"
+          >
+          </app-show-investment>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+  <div
+    class="justify-content-center align-items-center mb-1 col-md-6 col-sm-12 col-xs-12"
+  >
+    <div class="col-12" *ngIf="this.userBalanceData">
+      <div class="card card-pricing">
+        <div class="card-header">
+          <h4 class="card-title">Active Loan Requests</h4>
+        </div>
+        <app-active-loan-requests
+          *ngFor="let req of this.loanRequests"
+          [requestData]="req"
+          [user]="this.user"
+        ></app-active-loan-requests>
+      </div>
+    </div>
+  </div>
+</div>

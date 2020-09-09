@@ -1,0 +1,24 @@
+.btn {
+	background-color: #8b728e;
+	color: white;
+}
+
+.btn:hover {
+	background-color: #694873;
+	color: white;
+}
+
+.my-progress-bar {
+	background-color: #85b79d;
+}
+
+.arrow-down {
+	width: 17px;
+	color: white !important;
+}
+
+.current-loans {
+	border: 2px solid gray;
+	padding: 5px;
+	border-radius: 5px;
+}

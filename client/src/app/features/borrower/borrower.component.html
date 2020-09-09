@@ -1,0 +1,82 @@
+<div *ngIf="this.user && this.userBalanceData">
+  <br />
+  <div class="row">
+    <div
+      class="justify-content-center align-items-center mb-1 col-lg-6 col-md-12 col-sm-12 col-xs-12"
+    >
+      <div class="col-12">
+        <button
+          type="button"
+          class="btn col-12 crate-req-btn"
+          (click)="this.createLoanRequestModal()"
+          [disabled]="this.userBalanceData.status === 'admin'"
+        >
+          <b>Create Loan Request</b>
+        </button>
+        <div class="card card-pricing">
+          <div class="card-header">
+            <h4 class="card-title">Current Loans</h4>
+          </div>
+
+          <div *ngIf="this.currentLoans">
+            <app-current-loan
+              *ngFor="let loan of this.currentLoans"
+              [loanData]="loan"
+              [user]="this.user"
+            ></app-current-loan>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div
+      class="justify-content-center align-items-center mb-1 col-md-6 col-sm-12 col-xs-12"
+    >
+      <div class="col-12">
+        <div class="card card-pricing">
+          <div class="card-header">
+            <h4 class="card-title">Loan Requests(pending)</h4>
+            <h6>
+              Sort By:
+              <button
+                type="button"
+                class="btn crate-req-btn sort-btns"
+                (click)="this.orderLoansAsc('amount')"
+              >
+                <b>$+</b>
+              </button>
+              <button
+                type="button"
+                class="btn crate-req-btn sort-btns"
+                (click)="this.orderLoansDesc('amount')"
+              >
+                <b>$-</b>
+              </button>
+              <button
+                type="button"
+                class="btn crate-req-btn sort-btns"
+                (click)="this.orderLoansAsc('period')"
+              >
+                <b>Period +</b>
+              </button>
+              <button
+                type="button"
+                class="btn crate-req-btn sort-btns"
+                (click)="this.orderLoansDesc('period')"
+              >
+                <b>Period -</b>
+              </button>
+            </h6>
+          </div>
+          <app-loan-requests
+            *ngFor="let loanRequest of this.loanRequests"
+            [loanRequestData]="loanRequest"
+            [loanSuggestions]="this.loanSuggestions"
+            [user]="this.user"
+          ></app-loan-requests>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
